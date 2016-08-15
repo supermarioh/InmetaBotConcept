@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.Bot.Builder.Luis.Models;
 
 using InmetaBotConcept.Properties;
+using System.Resources;
 
 namespace InmetaBotConcept
 {
@@ -34,9 +35,10 @@ namespace InmetaBotConcept
         [LuisIntent("Login")]
         public async Task ProcessLoginWithPhoneNumber(IDialogContext context, LuisResult result)
         {
+            var entities = new List<EntityRecommendation>(result.Entities);
             try
             {
-                var entities = new List<EntityRecommendation>(result.Entities);
+                
                 var UserNumber = entities.FirstOrDefault(i => i.Type.Equals("PhoneNumber")).Entity;
                 int number;
                 var ValidUsers = new List<Customer>();
@@ -60,12 +62,14 @@ namespace InmetaBotConcept
                         entities.Add(new EntityRecommendation(type: "Name") { Entity = currentUser.Name });
                         entities.Add(new EntityRecommendation(type: "PhoneNumber") { Entity = currentUser.PhoneNumber });
                         entities.Add(new EntityRecommendation(type: "Address") { Entity = currentUser.Address });
-                        await context.PostAsync(string.Format("Welcome back {0}!", ValidUsers.First(x => x.PhoneNumber.Equals(UserNumber)).Name));
+                        await context.PostAsync(string.Format("Welcome back {0}! What are you going to have today?", currentUser.Name));
 
                     }
-                    else
-                        await context.PostAsync("New user! You need to register first!");
+                    else {
 
+                        entities.Add(new EntityRecommendation(type: "PhoneNumber") { Entity = UserNumber });
+                        await context.PostAsync("Hello there! Looks like it's your first order with us. Please type menu or help to start your order.");
+                    }
                 }
                 else
                 {
@@ -76,6 +80,10 @@ namespace InmetaBotConcept
             {
                 await context.PostAsync("Ohhh noooo!!! I'm stuck here. " + exp.Message);
             }
+
+
+            var pizzaForm = new FormDialog<PizzaOrder>(new PizzaOrder(), this.MakePizzaForm, FormOptions.PromptInStart, entities);
+            context.Call<PizzaOrder>(pizzaForm, PizzaFormComplete);
         }
 
         [LuisIntent("Cancel")]
@@ -90,9 +98,9 @@ namespace InmetaBotConcept
             var entities = new List<EntityRecommendation>(result.Entities);
             switch (entities.FirstOrDefault(i => i.Type.Equals("MenuAndHelp")).Entity)
             {
-                case "hi": await context.PostAsync("Hello there! Ready for some pizza? Possible commands: "); ShowPossibleCommands(context); break;
-                case "menu": await context.PostAsync("you can choose"); ShowMenu(context); break;
-                case "help": await context.PostAsync("these are examples of commands you can use:"); ShowPossibleCommands(context); break;
+                case "hi": await context.PostAsync("Hello there! Please enter your phone number or type 'menu'");break;
+                case "menu": await context.PostAsync("Menu:"); ShowMenu(context); break;
+                case "help": await context.PostAsync(""); ShowPossibleCommands(context); break;
                 default: await context.PostAsync("Sorry, I'm having an hard time to understand you. This is what you can choose:"); break;
             }
 
@@ -101,12 +109,13 @@ namespace InmetaBotConcept
 
         private async void ShowMenu(IDialogContext context)
         {
-            await context.PostAsync("1. Pepperoni pizza 2. Cheese pizza 3. chicken pizza");
+            await context.PostAsync("1. Pepperoni pizza  \n2. Cheese pizza  \n3. chicken pizza");
         }
 
         private async void ShowPossibleCommands(IDialogContext context)
         {
-            await context.PostAsync("Example 1: menu Example 2: large pepperoni pizza Example 3: medium cheese with garlic dressing and coke");
+            await context.PostAsync("Example 1: menu  \nExample 2: large pepperoni pizza  \n3: medium cheese with garlic dressing and coke");
+
         }
 
         [LuisIntent("Order")]
@@ -180,6 +189,7 @@ namespace InmetaBotConcept
 
             if (order != null)
             {
+                //Save new customer 
                 await context.PostAsync("Your Pizza Order: " + order.ToString());
             }
             else

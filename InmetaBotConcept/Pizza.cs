@@ -21,11 +21,11 @@ namespace InmetaBotConcept
     };
     public enum PizzaOptions
     {
-        [Terms(new string[] { "pepperoni", "peperoni" })]
+        [Terms(new string[] { "pepperoni", "peperoni","1" })]
         Pepperoni = 1,
-        [Terms(new string[] { "cheese" })]
+        [Terms(new string[] { "cheese","2" })]
         Cheese,
-        [Terms(new string[] { "chicken", "kylling" })]
+        [Terms(new string[] { "chicken", "kylling","3" })]
         Chicken
     };
 
@@ -44,13 +44,10 @@ namespace InmetaBotConcept
         Chili
     };
 
-
     [Serializable]
     class PizzaOrder
     {
-        public string Name;
-        public string PhoneNumber;
-        public string Address;
+
         [Prompt("What kind of pizza do you want? {||}")]
         [Template(TemplateUsage.NotUnderstood, "What does \"{0}\" mean???")]
         [Describe("Kind of pizza")]
@@ -58,7 +55,9 @@ namespace InmetaBotConcept
         public SizeOptions Size;
         public PizzaDressing Dressing;
         public DrinkOptions Drinks;
-        
+        public string PhoneNumber;
+        public string Name;  
+        public string Address;
 
         //[Optional]
         //public CouponOptions Coupon;

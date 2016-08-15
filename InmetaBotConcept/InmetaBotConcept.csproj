@@ -132,6 +132,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\InmetaBotConcept - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\InmetaBotConcept - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\InmetaBots - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\InmetaBots - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

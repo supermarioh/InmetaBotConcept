@@ -21,15 +21,14 @@ namespace InmetaBotConcept
             //ActiveDelegate<PizzaOrder> isBYO = (pizza) => pizza.Kind == PizzaOptions.BYOPizza;
             //ActiveDelegate<PizzaOrder> isSignature = (pizza) => pizza.Kind == PizzaOptions.SignaturePizza;
             //ActiveDelegate<PizzaOrder> isGourmet = (pizza) => pizza.Kind == PizzaOptions.GourmetDelitePizza;
-            //ActiveDelegate<PizzaOrder> isStuffed = (pizza) => pizza.Kind == PizzaOptions.StuffedPizza;
-
+            
             return builder
                 // .Field(nameof(PizzaOrder.Choice))
-                //.Field(nameof(PizzaOrder.Size))
-                //.Field(nameof(PizzaOrder.PizzaName))
-                //.Field("BYO.Crust", isBYO)
-                //.Field("BYO.Sauce", isBYO)
-                //.Field("BYO.Toppings", isBYO)
+                .Field(nameof(PizzaOrder.Size))
+                .Field(nameof(PizzaOrder.PizzaName))
+                .Field(nameof(PizzaOrder.Dressing))
+                .Field(nameof(PizzaOrder.Drinks))
+                //.Field(nameof(PizzaOrder.Address))
                 //.Field(nameof(PizzaOrder.GourmetDelite), isGourmet)
                 //.Field(nameof(PizzaOrder.Signature), isSignature)
                 //.Field(nameof(PizzaOrder.Stuffed), isStuffed)
@@ -45,7 +44,7 @@ namespace InmetaBotConcept
 
         internal static IDialog<PizzaOrder> MakeRoot()
         {
-            return Chain.From(() => new PizzaOrderDialog(BuildForm));
+            return Chain.From(() => new PizzaOrderDialog(BuildForm)).DefaultIfException<PizzaOrder>();
         }
 
         /// <summary>
