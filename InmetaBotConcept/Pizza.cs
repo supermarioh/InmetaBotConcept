@@ -48,6 +48,9 @@ namespace InmetaBotConcept
     [Serializable]
     class PizzaOrder
     {
+        public string Name;
+        public string PhoneNumber;
+        public string Address;
         [Prompt("What kind of pizza do you want? {||}")]
         [Template(TemplateUsage.NotUnderstood, "What does \"{0}\" mean???")]
         [Describe("Kind of pizza")]
@@ -55,8 +58,7 @@ namespace InmetaBotConcept
         public SizeOptions Size;
         public PizzaDressing Dressing;
         public DrinkOptions Drinks;
-        public string PhoneNumber;
-        public string Address;
+        
 
         //[Optional]
         //public CouponOptions Coupon;

@@ -54,7 +54,15 @@ namespace InmetaBotConcept
                     var existsUser = ValidUsers.Exists(x => x.PhoneNumber.Equals(UserNumber));
 
                     if (existsUser)
+                    {
+                        var currentUser = ValidUsers.First(x => x.PhoneNumber.Equals(UserNumber));
+
+                        entities.Add(new EntityRecommendation(type: "Name") { Entity = currentUser.Name });
+                        entities.Add(new EntityRecommendation(type: "PhoneNumber") { Entity = currentUser.PhoneNumber });
+                        entities.Add(new EntityRecommendation(type: "Address") { Entity = currentUser.Address });
                         await context.PostAsync(string.Format("Welcome back {0}!", ValidUsers.First(x => x.PhoneNumber.Equals(UserNumber)).Name));
+
+                    }
                     else
                         await context.PostAsync("New user! You need to register first!");
 
