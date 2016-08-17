@@ -32,6 +32,12 @@ namespace InmetaBotConcept
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("ZlatanKing")]
+        public async Task ProcessDiscount(IDialogContext context, LuisResult result)
+        {
+            await context.PostAsync("Congratulations! You have found the easter egg! Zlatan is the true King! You will get 20% discount!");
+        }
+
         [LuisIntent("Login")]
         public async Task ProcessLoginWithPhoneNumber(IDialogContext context, LuisResult result)
         {
@@ -68,7 +74,7 @@ namespace InmetaBotConcept
                     else {
 
                         entities.Add(new EntityRecommendation(type: "PhoneNumber") { Entity = UserNumber });
-                        await context.PostAsync("Hello there! Looks like it's your first order with us. Please type menu or help to start your order.");
+                        await context.PostAsync("Hello there! Looks like it's your first order with us. Please type 'menu' or 'help' to start your order.");
                     }
                 }
                 else
@@ -78,7 +84,7 @@ namespace InmetaBotConcept
             }
             catch (Exception exp)
             {
-                await context.PostAsync("Ohhh noooo!!! I'm stuck here. " + exp.Message);
+                await context.PostAsync("Ohhh noooo!!! An error occurred. Please try again later." + exp.Message);
             }
 
 
@@ -89,6 +95,7 @@ namespace InmetaBotConcept
         [LuisIntent("Cancel")]
         public async Task ProcessCancel(IDialogContext context, LuisResult result)
         {
+    
             await context.PostAsync("Order canceled!");
         }
 
@@ -99,9 +106,11 @@ namespace InmetaBotConcept
             switch (entities.FirstOrDefault(i => i.Type.Equals("MenuAndHelp")).Entity)
             {
                 case "hi": await context.PostAsync("Hello there! Please enter your phone number or type 'menu'");break;
-                case "menu": await context.PostAsync("Menu:"); ShowMenu(context); break;
+                case "hei": await context.PostAsync("Hello there! Please enter your phone number or type 'menu'"); break;
+                case "hello": await context.PostAsync("Hello there! Please enter your phone number or type 'menu'"); break;
+                case "menu": await context.PostAsync("Pizza Menu:"); ShowMenu(context); break;
                 case "help": await context.PostAsync(""); ShowPossibleCommands(context); break;
-                default: await context.PostAsync("Sorry, I'm having an hard time to understand you. This is what you can choose:"); break;
+                default: await context.PostAsync("Sorry, I'm having an hard time understanding you. This is what you can choose:"); ShowPossibleCommands(context); break;
             }
 
             context.Wait(MessageReceived);
@@ -109,12 +118,12 @@ namespace InmetaBotConcept
 
         private async void ShowMenu(IDialogContext context)
         {
-            await context.PostAsync("1. Pepperoni pizza  \n2. Cheese pizza  \n3. chicken pizza");
+            await context.PostAsync("1. KVESS  \n2. DRØMMEN  \n3. PIZZABAKEREN  \n4. SNADDER  \n5. MIX  \n6. MEKSIKANEREN  \n7. BIFFEN ");
         }
 
         private async void ShowPossibleCommands(IDialogContext context)
         {
-            await context.PostAsync("Example 1: menu  \nExample 2: large pepperoni pizza  \n3: medium cheese with garlic dressing and coke");
+            await context.PostAsync("Example 1: menu  \nExample 2: large KVESS pizza  \n3: medium DRØMMEN with garlic dressing and coke");
 
         }
 
@@ -145,31 +154,6 @@ namespace InmetaBotConcept
                 entities.Add(new EntityRecommendation(type: "Drinks") { Entity = Drinks });
             }
 
-            //string PizzaDressing = entities.FirstOrDefault(e => e.Type.Equals("PizzaDressing")).Entity;
-            //string DrinkOptions = entities.FirstOrDefault(e => e.Type.Equals("DrinkOptions")).Entity;
-
-
-
-            // Infer kind
-            //foreach (var entity in result.Entities)
-            //{
-            //    string kind = null;
-            //    switch (entity.Type)
-            //    {
-            //        case "Signature": kind = "Signature"; break;
-            //        //case "GourmetDelite": kind = "Gourmet delite"; break;
-            //        //case "Stuffed": kind = "stuffed"; break;
-            //        default:
-            //            if (entity.Type.StartsWith("BYO")) kind = "byo";
-            //            break;
-            //    }
-            //    if (kind != null)
-            //    {
-            //        entities.Add(new EntityRecommendation(type: "Kind") { Entity = kind });
-            //        break;
-            //    }
-            //}
-
             var pizzaForm = new FormDialog<PizzaOrder>(new PizzaOrder(), this.MakePizzaForm, FormOptions.PromptInStart, entities);
             context.Call<PizzaOrder>(pizzaForm, PizzaFormComplete);
         }
@@ -190,7 +174,8 @@ namespace InmetaBotConcept
             if (order != null)
             {
                 //Save new customer 
-                await context.PostAsync("Your Pizza Order: " + order.ToString());
+                await context.PostAsync("Your order: " + order.ToString());
+                //Save order to DB
             }
             else
             {

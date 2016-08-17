@@ -132,7 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\InmetaBotConcept - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\InmetaBotConcept - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\InmetaBotConcept - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\InmetaBotConcept - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\InmetaBots - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\InmetaBots - Web Deploy.pubxml" />

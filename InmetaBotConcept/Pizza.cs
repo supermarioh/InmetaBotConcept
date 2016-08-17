@@ -21,27 +21,40 @@ namespace InmetaBotConcept
     };
     public enum PizzaOptions
     {
-        [Terms(new string[] { "pepperoni", "peperoni","1" })]
-        Pepperoni = 1,
-        [Terms(new string[] { "cheese","2" })]
-        Cheese,
-        [Terms(new string[] { "chicken", "kylling","3" })]
-        Chicken
+        [Terms(new string[] { "KVESS", "kvess", "1" })]
+        KVESS = 1,
+        [Terms(new string[] { "DRØMMEN", "2", "drommen" })]
+        DRØMMEN = 2,
+        [Terms(new string[] { "3", "PIZZABAKEREN", "pizzabakeren" })]
+        PIZZABAKEREN = 3,
+        [Terms(new string[] { "4", "SNADDER", "snadder" })]
+        SNADDER = 4,
+        [Terms(new string[] { "5", "MIX", "mix" })]
+        MIX = 5,
+        [Terms(new string[] { "6", "MEKSIKANEREN","meksikaneren" })]
+        MEKSIKANEREN = 6,
+        [Terms(new string[] { "7", "BIFFEN", "biffen" })]
+        BIFFEN = 7
     };
 
     public enum DrinkOptions
     {
+
         [Terms(new string[] { "coke", "cocacola", "cola" })]
         CocaCola = 1,
         [Terms(new string[] { "icetea", "tea" })]
-        IceTea
+        IceTea = 2,
+        [Terms(new string[] { "none", "no" })]
+        None 
     };
 
     public enum PizzaDressing
     {
-        Garlic = 1,
+        Garlic =1,
         Aioli,
-        Chili
+        Chili,
+        [Terms(new string[] { "none", "no" })]
+        None
     };
 
     [Serializable]
@@ -55,6 +68,7 @@ namespace InmetaBotConcept
         public SizeOptions Size;
         public PizzaDressing Dressing;
         public DrinkOptions Drinks;
+        //Customer information
         public string PhoneNumber;
         public string Name;  
         public string Address;
@@ -65,28 +79,8 @@ namespace InmetaBotConcept
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendFormat("We will delivered a {0} {1} pizza with {2} and {3} at {4} in 25 minutes! In case of emergency we will call {5}. Thanks and bye bye.", Size, PizzaName, Dressing, Drinks, Address, PhoneNumber);
-            //switch (Kind)
-            //{
-            //    case PizzaOptions.BYOPizza:
-            //        builder.AppendFormat("{0}, {1}, {2}, [", Kind, BYO.Crust, BYO.Sauce);
-            //        foreach (var topping in BYO.Toppings)
-            //        {
-            //            builder.AppendFormat("{0} ", topping);
-            //        }
-            //        builder.AppendFormat("]");
-            //        break;
-            //    case PizzaOptions.GourmetDelitePizza:
-            //        builder.AppendFormat("{0}, {1}", Kind, GourmetDelite);
-            //        break;
-            //    case PizzaOptions.SignaturePizza:
-            //        builder.AppendFormat("{0}, {1}", Kind, Signature);
-            //        break;
-            //    case PizzaOptions.StuffedPizza:
-            //        builder.AppendFormat("{0}, {1}", Kind, Stuffed);
-            //        break;
-            //}
-            //builder.AppendFormat(", {0}, {1})", Address, PhoneNumber);
+            //builder.AppendFormat("We will delivered a {0} {1} pizza with {2} and {3} at {4} in 25 minutes! In case of emergency we will call {5}. Thanks and bye bye.", Size, PizzaName, Dressing, Drinks, Address, PhoneNumber);
+            builder.AppendFormat("We will delivered a {0} {1} pizza with {2} dressing and {3} to drink at {4} in 25 minutes to you {5}! In case we need to reach you, we will call {6}. We hope our pizza will meet your expectations. Thank you, and hope to be of service to you soon again.", Size, PizzaName, Dressing, Drinks, Address, Name, PhoneNumber);
             return builder.ToString();
         }
     };
